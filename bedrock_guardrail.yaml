@@ -1,6 +1,6 @@
 
 AWSTemplateFormatVersion: '2010-09-09'
-Description: 'Comprehensive Bedrock Guardrails - Python Code Scenarios'
+Description: 'Comprehensive Bedrock Guardrails -  Scenarios'
 
 Parameters:
   Environment:
