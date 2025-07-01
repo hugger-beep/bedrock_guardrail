@@ -289,33 +289,6 @@ Resources:
       
       TopicPolicyConfig:
         TopicsConfig:
-          # - Name: 'Educational Python'
-          #   Definition: 'Learning-focused Python discussions, tutorials, and educational examples'
-          #   Examples:
-          #     - 'How do I write a Python function?'
-          #     - 'Explain Python data structures'
-          #     - 'Best practices for Python coding'
-          #     - 'Python tutorial for beginners'
-          #   Type: NONE
-            
-          # - Name: 'Code Review and Debugging'
-          #   Definition: 'Code review, debugging help, and optimization discussions'
-          #   Examples:
-          #     - 'Can you review my Python code?'
-          #     - 'Help me debug this function'
-          #     - 'How to optimize this algorithm?'
-          #     - 'What is wrong with this code?'
-          #   Type: NONE
-            
-          # - Name: 'Python Libraries and Frameworks'
-          #   Definition: 'Discussions about Python libraries, frameworks, and tools'
-          #   Examples:
-          #     - 'How to use pandas for data analysis?'
-          #     - 'Flask vs Django comparison'
-          #     - 'NumPy array operations'
-          #     - 'Matplotlib plotting examples'
-          #   Type: NONE
-            
           - Name: 'Malicious Code'
             Definition: 'Code intended to harm systems, steal data, or perform unauthorized actions'
             Examples:
