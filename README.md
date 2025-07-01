@@ -1,6 +1,6 @@
 # Comprehensive Bedrock Guardrails - Engineering Guide
 
-## Overview
+## Overview - This is a sample
 
 This CloudFormation template deploys **13 specialized Bedrock Guardrails** for comprehensive AI security and compliance. Each guardrail targets specific threat vectors and use cases.
 
