@@ -1,6 +1,6 @@
-# How Bedrock Guardrails Work: Processing Flow & Logic
+# How Bedrock Guardrails Work: Processing Logic
 
-## 🔄 Guardrail Processing Flow
+## 🔄 Guardrail Processing Logic
 
 ### **Sequential Processing with Early Termination on BLOCK**
 
@@ -31,7 +31,7 @@ flowchart TD
 
 ## 📋 **Processing Logic**
 
-### **1. Content Policy Filters (First)**
+### **1. Content Policy Filters **
 ```yaml
 Evaluation Order:
   - SEXUAL: HIGH → Scan for sexual content
@@ -44,7 +44,7 @@ Evaluation Order:
 
 **Result**: If ANY filter triggers above threshold → **BLOCK**
 
-### **2. Topic Policy (Second)**
+### **2. Topic Policy **
 ```yaml
 Topic Matching:
   - MaliciousHacking: DENY → Check if content matches
@@ -58,7 +58,7 @@ Topic Matching:
 - If no DENY topic matches → **ALLOW** (continue processing)
 - **Note**: There are NO `ALLOW` topics - only `DENY` topics
 
-### **3. Word Policy (Third)**
+### **3. Word Policy **
 ```yaml
 Word Scanning:
   - Words in WordsConfig: [blocked words] → BLOCK
@@ -69,7 +69,7 @@ Word Scanning:
 **Result**: If blocked word found → **BLOCK**
 **Note**: There is NO "allowed words" list - only blocked words
 
-### **4. Sensitive Information Policy (Fourth)**
+### **4. Sensitive Information Policy **
 ```yaml
 PII Detection:
   - EMAIL: ANONYMIZE → Replace with [EMAIL]
@@ -121,7 +121,7 @@ Processing Flow:
 4. Never reached Regex Policy
 ```
 
-### **Modify Guardrail to allow it (Step-by-Step):** Adjust to match your test scenario,  this is just an example
+### **How Enhanced Guardrail Fixes It (Step-by-Step):** Adjust to match your test this is just an example
 
 #### **🔧 1. Content Filters - Choose Your Security Level:**
 
@@ -277,7 +277,7 @@ Processing:
 - Minimize regex patterns for better performance
 - Use specific word lists rather than broad pattern matching
 
-## 🎯 **Summary**
+## 🎯 **Summary - CORRECTED**
 
 **Guardrails DO stop at first blocking match** - they use early termination:
 
@@ -286,4 +286,3 @@ Processing:
 3. **Any Block = Final Block**: One blocking policy blocks entire request
 4. **All Must Pass**: Every policy must allow for final approval
 5. **ANONYMIZE Exception**: Only ANONYMIZE actions modify and continue processing
-
