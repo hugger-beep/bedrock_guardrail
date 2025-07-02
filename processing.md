@@ -108,7 +108,7 @@ Regex Patterns:
 - **ANONYMIZE EXCEPTION**: Only ANONYMIZE actions modify content and continue
 - **ALL MUST PASS**: Every policy must allow for final approval
 
-## 🎯 **Your Specific Case**
+## 🎯 **Example Use Case**
 
 ### **Why Your Prompt Was Blocked:**
 ```
