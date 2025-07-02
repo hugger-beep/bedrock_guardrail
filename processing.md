@@ -47,25 +47,27 @@ Evaluation Order:
 ### **2. Topic Policy (Second)**
 ```yaml
 Topic Matching:
-  - CodeGeneration: ALLOW → Check if content matches
-  - FileOperations: ALLOW → Check if content matches
-  - EncodedContent: ALLOW → Check if content matches
-  - CodeInjection: ALLOW → Check if content matches
+  - MaliciousHacking: DENY → Check if content matches
+  - IllegalActivities: DENY → Check if content matches
+  - ChildExploitation: DENY → Check if content matches
+  - Terrorism: DENY → Check if content matches
 ```
 
 **Logic**: 
-- If content matches ANY `ALLOW` topic → **CONTINUE**
 - If content matches ANY `DENY` topic → **BLOCK**
-- If no topic matches → Use default behavior
+- If no DENY topic matches → **ALLOW** (continue processing)
+- **Note**: There are NO `ALLOW` topics - only `DENY` topics
 
 ### **3. Word Policy (Third)**
 ```yaml
 Word Scanning:
-  - Allowed Words: ['rewrite', 'refactor', 'code', 'file'] → ALLOW
-  - Blocked Words: [profanity list] → BLOCK
+  - Words in WordsConfig: [blocked words] → BLOCK
+  - Words NOT in WordsConfig: [all other words] → ALLOW
+  - ManagedWordListsConfig: [profanity list] → BLOCK
 ```
 
 **Result**: If blocked word found → **BLOCK**
+**Note**: There is NO "allowed words" list - only blocked words
 
 ### **4. Sensitive Information Policy (Fourth)**
 ```yaml
@@ -75,14 +77,15 @@ PII Detection:
   
 Regex Patterns:
   - ProductionAPIKeys: BLOCK → Block if matches
-  - AllowEncodedContent: ALLOW → Allow if matches
-  - AllowFileReferences: ALLOW → Allow if matches
+  - MaliciousFileDownloads: BLOCK → Block if matches
+  - SuspiciousDownloadCommands: BLOCK → Block if matches
 ```
 
 **Logic**:
 - **BLOCK** patterns → **IMMEDIATE BLOCK**
-- **ALLOW** patterns → **CONTINUE PROCESSING**
 - **ANONYMIZE** → **MODIFY CONTENT** and continue
+- **No pattern match** → **ALLOW** (continue processing)
+- **Note**: There are NO `ALLOW` regex patterns - only `BLOCK` and `ANONYMIZE`
 
 ## ⚡ **Key Processing Rules**
 
@@ -90,13 +93,14 @@ Regex Patterns:
 - **ANY** content filter above threshold → **IMMEDIATE BLOCK**
 - **ANY** blocked word found → **IMMEDIATE BLOCK**  
 - **ANY** BLOCK regex pattern match → **IMMEDIATE BLOCK**
-- **NO** matching ALLOW topic (if topics defined) → **BLOCK**
+- **ANY** matching DENY topic → **BLOCK**
 
 ### **✅ Allow Behavior:**
 - **ALL** content filters pass (below threshold)
-- **AND** at least one ALLOW topic matches
+- **AND** no DENY topics match
 - **AND** no blocked words found
 - **AND** no BLOCK regex patterns match
+- **AND** no PII requiring ANONYMIZE
 
 ### **🔄 Processing Rules:**
 - Content filters with `NONE` strength are **SKIPPED**
@@ -124,16 +128,16 @@ Processing Flow:
    - MISCONDUCT: NONE → SKIP (no blocking)
 
 2. Topic Policy:
-   - CodeGeneration: ALLOW → MATCHES → CONTINUE
-   - EncodedContent: ALLOW → MATCHES → CONTINUE
+   - No DENY topics match → CONTINUE
+   - Content allowed by default → CONTINUE
 
 3. Word Policy:
-   - 'rewrite': ALLOWED → CONTINUE
-   - 'file': ALLOWED → CONTINUE
+   - 'rewrite': NOT in blocked list → CONTINUE
+   - 'file': NOT in blocked list → CONTINUE
 
 4. Regex Policy:
-   - 'ipynb#[A-Za-z0-9+/=%]+': ALLOW → CONTINUE
-   - '(file|rewrite|refactor|code)': ALLOW → CONTINUE
+   - No BLOCK patterns match → CONTINUE
+   - Encoded content allowed by default → CONTINUE
 
 Final Result: ALL POLICIES PASS → ALLOW
 ```
@@ -187,7 +191,7 @@ Processing:
 - Minimize regex patterns for better performance
 - Use specific word lists rather than broad pattern matching
 
-## 🎯 **Summary **
+## 🎯 **Summary**
 
 **Guardrails DO stop at first blocking match** - they use early termination:
 
