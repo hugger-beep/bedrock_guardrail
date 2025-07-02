@@ -188,5 +188,3 @@ Processing:
 3. **All Must Pass**: Every policy must allow for final approval
 4. **Early Termination**: Only happens on BLOCK, not ALLOW
 5. **Modification Continues**: ANONYMIZE actions modify and continue processing
-
-Your enhanced guardrail works because it **removes blocking policies** (NONE strength) and **adds explicit ALLOW policies** for your specific content patterns.
