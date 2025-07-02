@@ -100,7 +100,7 @@ Regex Patterns:
 - ANONYMIZE actions **MODIFY** content and continue
 - All policies must pass for final **ALLOW**
 
-## 🎯 **Your Specific Case**
+## 🎯 **Example**
 
 ### **Why Your Prompt Was Blocked:**
 ```
