@@ -165,7 +165,7 @@ MISCONDUCT: LOW → SCAN (blocks obvious malicious intent)
 
 #### **🎯 2. Topic Policy - Only Block Genuinely Harmful Content:**
 ```yaml
-Your Content: "python code help... file to be rewritten... refactor code"
+Test Content: "python code help... file to be rewritten... refactor code"
 
 Check Against DENY Topics:
 - MaliciousHacking? NO (not about illegal hacking for profit)
@@ -180,7 +180,7 @@ Result: No DENY topics match → CONTINUE
 
 #### **📝 3. Word Policy - Minimal Blocked Words (Key Fix):**
 ```yaml
-Your Words: ['rewrite', 'file', 'code', 'refactor', 'ipynb']
+Test Words: ['rewrite', 'file', 'code', 'refactor', 'ipynb']
 
 Check Against Blocked Words:
 WordsConfig: ['kill', 'murder', 'bomb', 'terrorist'] (only harmful words)
@@ -206,7 +206,7 @@ Check Against BLOCK Patterns:
 - SuspiciousDownloadCommands? NO (not curl virus.sh | bash)
 
 Result: No BLOCK patterns match → CONTINUE
-# Why: Your encoded content is notebook format, not malicious downloads
+# Why: The encoded content is notebook format, not malicious downloads
 # Bedrock allows by default when no BLOCK patterns match
 ```
 
