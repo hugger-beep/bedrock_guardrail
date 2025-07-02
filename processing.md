@@ -112,7 +112,7 @@ Regex Patterns:
 
 ### **Why Your Prompt Was Blocked:**
 ```
-Original Prompt: "ipynb#W0sZmlsZQ%3D%3D" + "file to be rewritten" + "refactor code"
+Original Prompt: "ipynblk0sCvlsOP%3D%4D" + "file to be rewritten" + "refactor code"
 
 Processing Flow:
 1. Content Filters: PROMPT_ATTACK detected encoded content → BLOCK
