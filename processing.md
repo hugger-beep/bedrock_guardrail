@@ -121,7 +121,7 @@ Processing Flow:
 4. Never reached Regex Policy
 ```
 
-### **How Enhanced Guardrail Fixes It (Step-by-Step):** Adjust to match your test this is just an example
+### **Modify Guardrail to allow it (Step-by-Step):** Adjust to match your test scenario,  this is just an example
 
 #### **🔧 1. Content Filters - Choose Your Security Level:**
 
