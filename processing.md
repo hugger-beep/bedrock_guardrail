@@ -112,7 +112,7 @@ Regex Patterns:
 
 ### **Why Your Prompt Was Blocked:**
 ```
-Original Prompt: "ipynblk0sCvlsOP%3D%4D" + "file to be rewritten" + "refactor code"
+Original Prompt: "ipynb#W0sZmlsZQ%3D%3D" + "file to be rewritten" + "refactor code"
 
 Processing Flow:
 1. Content Filters: PROMPT_ATTACK detected encoded content → BLOCK
@@ -121,26 +121,85 @@ Processing Flow:
 4. Never reached Regex Policy
 ```
 
-### **How Enhanced Guardrail Fixes It:**
+### **How Enhanced Guardrail Fixes It (Step-by-Step):** Adjust to match your test this is just an example
+
+#### **🔧 1. Content Filters - Set to NONE (Most Important Fix):**
 ```yaml
-1. Content Filters:
-   - PROMPT_ATTACK: NONE → SKIP (no blocking)
-   - MISCONDUCT: NONE → SKIP (no blocking)
+PROMPT_ATTACK: NONE → SKIP (no blocking)
+# Why: NONE = Completely disabled, won't scan for encoded content like "ipynb#W0sZmlsZQ%3D%3D"
+# Before: HIGH would block your encoded notebook content immediately
+# After: Skips this check entirely, allows all encoded patterns
 
-2. Topic Policy:
-   - No DENY topics match → CONTINUE
-   - Content allowed by default → CONTINUE
-
-3. Word Policy:
-   - 'rewrite': NOT in blocked list → CONTINUE
-   - 'file': NOT in blocked list → CONTINUE
-
-4. Regex Policy:
-   - No BLOCK patterns match → CONTINUE
-   - Encoded content allowed by default → CONTINUE
-
-Final Result: ALL POLICIES PASS → ALLOW
+MISCONDUCT: NONE → SKIP (no blocking)  
+# Why: NONE = Completely disabled, won't scan for "hack", "exploit", "rewrite" terms
+# Before: HIGH/LOW would block legitimate security code discussions
+# After: Allows all code-related terms including security topics
 ```
+
+#### **🎯 2. Topic Policy - Only Block Genuinely Harmful Content:**
+```yaml
+Your Content: "python code help... file to be rewritten... refactor code"
+
+Check Against DENY Topics:
+- MaliciousHacking? NO (not about illegal hacking for profit)
+- IllegalActivities? NO (not about fraud, drugs, etc.)
+- ChildExploitation? NO (not about minors)
+- Terrorism? NO (not about bombs, attacks)
+
+Result: No DENY topics match → CONTINUE
+# Why: Your content is legitimate code help, not harmful activities
+# Bedrock allows by default when no DENY topics match
+```
+
+#### **📝 3. Word Policy - Minimal Blocked Words (Key Fix):**
+```yaml
+Your Words: ['rewrite', 'file', 'code', 'refactor', 'ipynb']
+
+Check Against Blocked Words:
+WordsConfig: ['kill', 'murder', 'bomb', 'terrorist'] (only harmful words)
+# 'rewrite': NOT in blocked list → CONTINUE ✅
+# 'file': NOT in blocked list → CONTINUE ✅  
+# 'code': NOT in blocked list → CONTINUE ✅
+# 'refactor': NOT in blocked list → CONTINUE ✅
+# 'ipynb': NOT in blocked list → CONTINUE ✅
+
+Result: No blocked words found → CONTINUE
+# Why: WordsConfig only contains genuinely harmful words, not technical terms
+# Technical terms allowed by default (not in blocked list)
+# ManagedWordListsConfig (profanity) still blocks inappropriate language
+```
+
+#### **🔍 4. Regex Policy - No Malicious Patterns:**
+```yaml
+Your Content: "ipynb#W0sZmlsZQ%3D%3D... file to be rewritten"
+
+Check Against BLOCK Patterns:
+- ProductionAPIKeys? NO (not prod_api_key=abc123)
+- MaliciousFileDownloads? NO (not wget malware.exe)
+- SuspiciousDownloadCommands? NO (not curl virus.sh | bash)
+
+Result: No BLOCK patterns match → CONTINUE
+# Why: Your encoded content is notebook format, not malicious downloads
+# Bedrock allows by default when no BLOCK patterns match
+```
+
+#### **✅ Final Result: ALL POLICIES PASS → ALLOW**
+```
+🔄 Processing Summary:
+1. Content Filters: SKIPPED (NONE strength)
+2. Topic Policy: PASSED (no harmful topics)
+3. Word Policy: PASSED (no blocked words)
+4. Regex Policy: PASSED (no malicious patterns)
+
+🎉 Outcome: Request allowed, model generates code response
+```
+
+#### **🔑 Key Settings That Make This Work:**
+- **PROMPT_ATTACK: NONE** - Allows encoded content like notebook formats
+- **MISCONDUCT: NONE** - Allows code security discussions and file operations  
+- **WordsConfig: [harmful words only]** - No technical terms blocked, only genuinely harmful words
+- **DENY Topics Only** - Blocks genuinely harmful content, allows everything else
+- **Minimal Regex Blocks** - Only blocks actual malicious file downloads
 
 ## 🔍 **Testing Different Scenarios**
 
@@ -191,7 +250,7 @@ Processing:
 - Minimize regex patterns for better performance
 - Use specific word lists rather than broad pattern matching
 
-## 🎯 **Summary**
+## 🎯 **Summary - CORRECTED**
 
 **Guardrails DO stop at first blocking match** - they use early termination:
 
@@ -200,4 +259,3 @@ Processing:
 3. **Any Block = Final Block**: One blocking policy blocks entire request
 4. **All Must Pass**: Every policy must allow for final approval
 5. **ANONYMIZE Exception**: Only ANONYMIZE actions modify and continue processing
-
