@@ -33,7 +33,7 @@ flowchart TD
 
 ### **1. Content Policy Filters **
 ```yaml
-Evaluation Order:
+Evaluation :
   - SEXUAL: HIGH → Scan for sexual content
   - VIOLENCE: HIGH → Scan for violent content  
   - HATE: HIGH → Scan for hate speech
