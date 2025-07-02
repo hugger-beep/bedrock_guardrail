@@ -108,7 +108,7 @@ Regex Patterns:
 - **ANONYMIZE EXCEPTION**: Only ANONYMIZE actions modify content and continue
 - **ALL MUST PASS**: Every policy must allow for final approval
 
-## 🎯 **Example Use Case**
+## 🎯 **Your Specific Case**
 
 ### **Why Your Prompt Was Blocked:**
 ```
@@ -123,7 +123,9 @@ Processing Flow:
 
 ### **How Enhanced Guardrail Fixes It (Step-by-Step):** Adjust to match your test this is just an example
 
-#### **🔧 1. Content Filters - Set to NONE (Most Important Fix):**
+#### **🔧 1. Content Filters - Choose Your Security Level:**
+
+##### **✅ Option A: NONE (Safest for Code Generation):**
 ```yaml
 PROMPT_ATTACK: NONE → SKIP (no blocking)
 # Why: NONE = Completely disabled, won't scan for encoded content like "ipynb#W0sZmlsZQ%3D%3D"
@@ -135,6 +137,31 @@ MISCONDUCT: NONE → SKIP (no blocking)
 # Before: HIGH/LOW would block legitimate security code discussions
 # After: Allows all code-related terms including security topics
 ```
+
+##### **⚠️ Option B: LOW (More Security, Some Risk):**
+```yaml
+PROMPT_ATTACK: LOW → SCAN (blocks obvious attacks only)
+# Risk: May still block some encoded content patterns
+# Allows: Most legitimate code patterns including "ipynb#W0sZmlsZQ%3D%3D"
+# Use: When you need some protection but want to allow most code content
+
+MISCONDUCT: LOW → SCAN (blocks obvious malicious intent)
+# Risk: May block some security code discussions
+# Allows: Most code-related terms like "rewrite", "exploit" for educational use
+# Use: When you need some protection but want to allow most development terms
+```
+
+##### **📊 Comparison Table:**
+| Setting | NONE | LOW | HIGH |
+|---------|------|-----|------|
+| **Encoded Content** | ✅ Always Allow | ⚠️ Usually Allow | ❌ Usually Block |
+| **Security Terms** | ✅ Always Allow | ⚠️ Context Dependent | ❌ Usually Block |
+| **Code Injection Patterns** | ✅ Always Allow | ⚠️ May Block Obvious Ones | ❌ Block Most |
+| **Risk Level** | Lowest Blocking | Medium Blocking | Highest Blocking |
+
+##### **🎯 Recommendation:**
+- **Development/Testing**: Use NONE (safest)
+- **Production**: Start with NONE, move to LOW only if security needed
 
 #### **🎯 2. Topic Policy - Only Block Genuinely Harmful Content:**
 ```yaml
@@ -259,3 +286,4 @@ Processing:
 3. **Any Block = Final Block**: One blocking policy blocks entire request
 4. **All Must Pass**: Every policy must allow for final approval
 5. **ANONYMIZE Exception**: Only ANONYMIZE actions modify and continue processing
+
